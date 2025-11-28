@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan Peribahasa Tahun 6 - Cute Version</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', Arial, sans-serif;
+      background: #fef6f0;
+      padding: 20px;
+      background-image: url('https://uploads-ssl.webflow.com/64380d1f2275c122f55d7d8a/646a02f8548dd461f40940f4_0_1.png'); /* 可替换成线上背景URL */
+      background-size: cover;
+      background-position: center;
+    }
+    h1 {
+      text-align: center;
+      color: #ff69b4;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    #quiz {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border: 4px dashed #ffb6c1;
+    }
+    #question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .opt {
+      background: #ffe4e1;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 2px solid #ffb6c1;
+    }
+    .opt:hover {
+      background: #ffc0cb;
+      transform: scale(1.03);
+    }
+    .correct {
+      background: #a0e6a0 !important;
+      border-color: #4caf50 !important;
+    }
+    .wrong {
+      background: #f69a9a !important;
+      border-color: #f44336 !important;
+    }
+    #controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ff69b4;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:disabled {
+      background: #ffb6c1;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background: #ff1493;
+    }
+    #score {
+      font-weight: bold;
+      color: #ff1493;
+    }
+  </style>
+</head>
+<body>
+  <h1>Latihan Peribahasa Tahun 6</h1>
+  <div id="quiz">
+    <p>Soalan <span id="cur">1</span> daripada <span id="total">15</span></p>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="controls">
+      <span id="score">Markah: 0</span>
+      <div>
+        <button id="nextBtn" disabled>Soalan Seterusnya</button>
+        <button id="restart">Mulakan Semula</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const rawData = `
+1|Penduduk Kampung Sentosa bekerjasama membaiki jambatan yang rosak itu. Bak kata pepatah, __________.|berat sama dipikul, ringan sama dijinjing|di mana bumi dipijak, di situ langit dijunjung|alang-alang menyeluk pekasam, biar sampai ke pangkal lengan|hati gajah sama dilapah, hati kuman sama dicecah|A
+2|Walaupun Ali sudah insaf, namun kesilapannya dahulu menyebabkan dia dibuang sekolah. Keadaan ini ibarat __________.|sudah jatuh ditimpa tangga|nasi sudah menjadi bubur|menangguk di air keruh|sesal dahulu pendapatan, sesal kemudian tidak berguna|B
+3|Kamal berasa sangat bertuah kerana mendapat hadiah sebuah basikal baharu tanpa disangka-sangka, bagai __________.|bulan jatuh ke riba|tikus membaiki labu|kera mendapat bunga|rusa masuk kampung|A
+4|Sikap pemuda yang melupakan jasa ibu bapanya setelah hidup senang di bandar itu diumpamakan seperti __________.|kacang lupakan kulit|melepaskan anjing tersepit|ulat lupakan daun|gunting dalam lipatan|A
+5|"Kita mestilah berbelanja mengikut kemampuan diri sendiri dan janganlah berhutang keliling pinggang," nasihat ayah. Peribahasa yang sesuai ialah __________.|sediakan payung sebelum hujan|ukur baju di badan sendiri|sikit-sikit lama-lama jadi bukit|ingat sebelum kena, jimat sebelum habis|B
+6|Walaupun Ahmad dan Ali sering bertengkar, akhirnya mereka berbaik semula kerana mereka adalah adik-beradik. Bak kata orang, __________.|air dicencang tidak akan putus|carik-carik bulu ayam, lama-lama bercantum juga|buang yang keruh, ambil yang jernih|cubit paha kanan, paha kiri terasa juga|A
+7|Kita haruslah menyesuaikan diri dengan adat resam dan budaya di tempat orang apabila kita merantau.|masuk kandang kambing mengembek, masuk kandang kerbau menguak|biar mati anak, jangan mati adat|tak lapuk dek hujan, tak lekang dek panas|hujan emas di negeri orang, hujan batu di negeri sendiri|A
+8|Nasihat yang diberikan oleh Cikgu Murni kepada murid yang degil itu sia-sia sahaja, seperti __________.|mencurah air ke daun keladi|melepaskan batuk di tangga|mencurah garam ke laut|anjing menyalak bukit|A
+9|Perbuatan menunjuk-nunjuk kekayaan atau kelebihan diri sendiri hanya akan merugikan diri. Pepatah yang sesuai ialah __________.|lembu punya susu, sapi dapat nama|masuk bakul angkat sendiri|kalau kail panjang sejengkal, lautan dalam jangan diduga|ikut resmi padi, semakin berisi semakin tunduk|B
+10|"Janganlah kamu berputus asa, teruskan berusaha sehingga berjaya kerana __________," kata jurulatih itu.|di mana ada kemahuan, di situ ada jalan|genggam bara api biar sampai jadi arang|kalau tidak dipecahkan ruyung, manakan dapat sagunya|belakang parang kalau diasah lagikan tajam|A
+11|Pasangan pengantin itu kelihatan sama cantik dan sama padan apabila bersanding di atas pelamin, bagai __________.|pinang dibelah dua|cincin dengan permata|enggang dengan pipit|bulan dipagar bintang|A
+12|Segala rahsia syarikat itu terbongkar kerana ada pekerja yang menjadi pengkhianat. Situasi ini disebut sebagai __________.|musuh dalam selimut|api dalam sekam|gunting dalam lipatan|talam dua muka|C
+13|Mak Cik Kiah berasa __________ apabila menunggu kepulangan anaknya yang masih belum tiba walaupun hari sudah larut malam.|seperti cacing kepanasan|seperti kera sumbang|seperti lipas kudung|seperti ayam berak kapur|A
+14|Bakat nyanyian Siti memang diwarisi daripada ibunya yang merupakan bekas penyanyi terkenal. Hal ini menepati peribahasa __________.|bapa borek anak rintik|bagaimana acuan begitulah kuihnya|ke mana tumpahnya kuah kalau tidak ke nasi|melentur buluh biarlah dari rebungnya|C
+15|Apabila kita melakukan sesuatu pekerjaan yang susah, kita perlulah bersabar sedikit demi sedikit sehingga selesai. Peribahasa yang sesuai ialah __________.|sehari selembar benang, lama-lama menjadi kain|alang-alang menyeluk pekasam, biar sampai ke pangkal lengan|biar lambat asalkan selamat|yang dikejar tak dapat, yang dikendong berciciran|A
+`;
+
+    const data = rawData.trim().split("\n").map(line=>{
+      const parts = line.split("|");
+      const qtext = parts[1].trim();
+      const opts = parts.slice(2,6).map(s=>s.trim());
+      const ansMap = {A:0,B:1,C:2,D:3};
+      const answer = ansMap[parts[6].trim().toUpperCase()];
+      return {q:qtext, options:opts, answer:answer};
+    });
+
+    document.getElementById('total').textContent = data.length;
+    let current=0, score=0, answered=false;
+
+    function loadQuestion(){
+      answered=false;
+      document.getElementById('nextBtn').disabled = true;
+      const q = data[current];
+      document.getElementById('question').innerHTML = q.q;
+      document.getElementById('cur').textContent = current+1;
+      const optsDiv = document.getElementById('options');
+      optsDiv.innerHTML = '';
+      q.options.forEach((opt,i)=>{
+        const div = document.createElement('div');
+        div.className='opt';
+        div.innerHTML = opt;
+        div.addEventListener('click',()=>selectOption(div,i));
+        optsDiv.appendChild(div);
+      });
+    }
+
+    function selectOption(el,index){
+      if(answered) return;
+      answered=true;
+      const q = data[current];
+      const all = document.querySelectorAll('.opt');
+      all.forEach((d,i)=>{ if(i===q.answer) d.classList.add('correct'); });
+      if(index!==q.answer) el.classList.add('wrong'); else score++;
+      document.getElementById('score').textContent='Markah: '+score;
+      document.getElementById('nextBtn').disabled=false;
+    }
+
+    document.getElementById('nextBtn').addEventListener('click',()=>{
+      current++;
+      if(current>=data.length){
+        alert('Latihan tamat! Jumlah markah: ' + score);
+        return;
+      }
+      loadQuestion();
+    });
+
+    document.getElementById('restart').addEventListener('click',()=>{
+      if(confirm('Adakah anda mahu mengulang semula latihan?')){
+        current=0;
+        score=0;
+        document.getElementById('score').textContent='Markah: 0';
+        loadQuestion();
+      }
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>
