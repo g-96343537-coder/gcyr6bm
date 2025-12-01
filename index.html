@@ -3,101 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latihan Peribahasa Tahun 6 </title>
+  <title>Latihan Peribahasa Tahun 6 - Cute Version</title>
   <style>
+    /* ====== 全局样式 ====== */
     body {
-      font-family: 'Comic Sans MS', Arial, sans-serif;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', Arial, sans-serif;
       background: #fef6f0;
       padding: 20px;
-      background-image: url('https://uploads-ssl.webflow.com/64380d1f2275c122f55d7d8a/646a02f8548dd461f40940f4_0_1.png'); /* 可替换成线上背景URL */
+      background-image: url('https://uploads-ssl.webflow.com/64380d1f2275c122f55d7d8a/646a02f8548dd461f40940f4_0_1.png');
       background-size: cover;
       background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
+
     h1 {
       text-align: center;
       color: #ff69b4;
-      font-size: 2rem;
-      margin-bottom: 20px;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 0 #fff;
     }
-    #quiz {
+
+    /* ====== 通用容器样式 ====== */
+    .container-box {
       max-width: 800px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
       border: 4px dashed #ffb6c1;
     }
-    #question {
-      font-size: 1.2rem;
+
+    /* ====== 1. 开始画面样式 ====== */
+    #start-screen {
+      text-align: center;
+    }
+
+    .input-group {
       margin-bottom: 20px;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .opt {
-      background: #ffe4e1;
+
+    .input-group label {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #ff69b4;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
       padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 12px;
+      font-size: 1.1rem;
+      border: 3px solid #ffb6c1;
+      border-radius: 15px;
+      box-sizing: border-box;
+      outline: none;
+      font-family: inherit;
+      background-color: #fff0f5;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: #ff1493;
+      background-color: #fff;
+    }
+
+    #startBtn {
+      padding: 12px 40px;
+      font-size: 1.4rem;
+      border: none;
+      border-radius: 50px;
+      background: #ff69b4;
+      color: #fff;
       cursor: pointer;
-      transition: 0.2s;
-      border: 2px solid #ffb6c1;
+      font-weight: bold;
+      box-shadow: 0 4px 0 #db7093;
+      transition: transform 0.1s;
+      margin-top: 10px;
     }
-    .opt:hover {
-      background: #ffc0cb;
-      transform: scale(1.03);
+
+    #startBtn:active {
+      transform: translateY(4px);
+      box-shadow: none;
     }
-    .correct {
-      background: #a0e6a0 !important;
-      border-color: #4caf50 !important;
+
+    /* ====== 2. 测验内容样式 (初始隐藏) ====== */
+    #quiz-content {
+      display: none;
     }
-    .wrong {
-      background: #f69a9a !important;
-      border-color: #f44336 !important;
-    }
-    #controls {
-      margin-top: 20px;
+
+    #student-info-bar {
+      background: #fff0f5;
+      padding: 10px 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-weight: bold;
+      color: #c71585;
+      border: 2px solid #ffb6c1;
     }
-    button {
-      padding: 10px 15px;
+
+    #question {
+      font-size: 1.4rem;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      color: #333;
+    }
+
+    .opt {
+      background: #ffe4e1;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 2px solid #ffb6c1;
+      font-size: 1.1rem;
+    }
+
+    .opt:hover {
+      background: #ffc0cb;
+      transform: scale(1.02);
+    }
+
+    .correct {
+      background: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724;
+    }
+
+    .wrong {
+      background: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24;
+    }
+
+    #controls {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px dashed #ffb6c1;
+      padding-top: 20px;
+    }
+
+    .action-btn {
+      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #ff69b4;
       color: #fff;
       cursor: pointer;
       font-weight: bold;
       transition: 0.2s;
+      font-size: 1rem;
+      box-shadow: 0 3px 0 #db7093;
     }
-    button:disabled {
+    
+    .action-btn:active {
+        transform: translateY(3px);
+        box-shadow: none;
+    }
+
+    .action-btn:disabled {
       background: #ffb6c1;
       cursor: not-allowed;
+      box-shadow: none;
     }
-    button:hover:not(:disabled) {
+
+    .action-btn:hover:not(:disabled) {
       background: #ff1493;
     }
+
     #score {
       font-weight: bold;
       color: #ff1493;
+      font-size: 1.3rem;
+    }
+
+    /* 结果页样式 */
+    #result-screen {
+        text-align: center;
+        padding: 20px;
     }
   </style>
 </head>
 <body>
   <h1>Latihan Peribahasa Tahun 6</h1>
-  <div id="quiz">
-    <p>Soalan <span id="cur">1</span> daripada <span id="total">15</span></p>
-    <div id="question"></div>
-    <div id="options"></div>
-    <div id="controls">
-      <span id="score">Markah: 0</span>
-      <div>
-        <button id="nextBtn" disabled>Soalan Seterusnya</button>
-        <button id="restart">Mulakan Semula</button>
-      </div>
+  
+  <div class="container-box">
+    
+    <div id="start-screen">
+        <h2 style="color:#ff1493;">Selamat Datang! 🌸</h2>
+        <div class="input-group">
+            <label for="student-name">Nama Murid (姓名):</label>
+            <input type="text" id="student-name" placeholder="Masukkan nama anda..." autocomplete="off">
+        </div>
+        <div class="input-group">
+            <label for="student-class">Kelas (班级):</label>
+            <select id="student-class">
+                <option value="">Sila pilih kelas</option>
+                <option value="6M">6M</option>
+                <option value="6K">6K</option>
+                <option value="6B">6B</option>
+                <option value="6H">6H</option>
+                <option value="6J">6J</option>
+                <option value="6U">6U</option>
+                <option value="6P">6P</option>
+                <option value="6C">6C</option>
+            </select>
+        </div>
+        <button id="startBtn">Mula Kuiz</button>
     </div>
+
+    <div id="quiz-content">
+        <div id="student-info-bar">
+            <span id="display-name">Nama: -</span>
+            <span id="display-class">Kelas: -</span>
+        </div>
+
+        <p style="color:#666; font-size: 0.9rem;">Soalan <span id="cur">1</span> / <span id="total">15</span></p>
+        <div id="question"></div>
+        <div id="options"></div>
+        
+        <div id="controls">
+            <span id="score">Markah: 0</span>
+            <button id="nextBtn" class="action-btn" disabled>Soalan Seterusnya</button>
+        </div>
+    </div>
+
   </div>
 
   <script>
+    // ====== 你的新 Google Apps Script 链接 ======
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYgdAusWGUnCy-QKOcRIUQeciFfrE7FgQg49-yB-aq2JtN3qwU7jz0aaCRCLAmhj1J/exec";
+
     const rawData = `
 1|Penduduk Kampung Sentosa bekerjasama membaiki jambatan yang rosak itu. Bak kata pepatah, __________.|berat sama dipikul, ringan sama dijinjing|di mana bumi dipijak, di situ langit dijunjung|alang-alang menyeluk pekasam, biar sampai ke pangkal lengan|hati gajah sama dilapah, hati kuman sama dicecah|A
 2|Walaupun Ali sudah insaf, namun kesilapannya dahulu menyebabkan dia dibuang sekolah. Keadaan ini ibarat __________.|sudah jatuh ditimpa tangga|nasi sudah menjadi bubur|menangguk di air keruh|sesal dahulu pendapatan, sesal kemudian tidak berguna|B
@@ -116,6 +265,7 @@
 15|Apabila kita melakukan sesuatu pekerjaan yang susah, kita perlulah bersabar sedikit demi sedikit sehingga selesai. Peribahasa yang sesuai ialah __________.|sehari selembar benang, lama-lama menjadi kain|alang-alang menyeluk pekasam, biar sampai ke pangkal lengan|biar lambat asalkan selamat|yang dikejar tak dapat, yang dikendong berciciran|A
 `;
 
+    // 数据解析
     const data = rawData.trim().split("\n").map(line=>{
       const parts = line.split("|");
       const qtext = parts[1].trim();
@@ -125,57 +275,188 @@
       return {q:qtext, options:opts, answer:answer};
     });
 
+    // 全局变量
+    let current = 0;
+    let score = 0;
+    let answered = false;
+    let studentName = "";
+    let studentClass = "";
+
+    // DOM 元素
+    const startScreen = document.getElementById('start-screen');
+    const quizContent = document.getElementById('quiz-content');
+    const startBtn = document.getElementById('startBtn');
+    const nameInput = document.getElementById('student-name');
+    const classInput = document.getElementById('student-class');
+    const dispName = document.getElementById('display-name');
+    const dispClass = document.getElementById('display-class');
+    const container = document.querySelector('.container-box');
+
     document.getElementById('total').textContent = data.length;
-    let current=0, score=0, answered=false;
 
+    // ====== 1. 开始逻辑 ======
+    startBtn.addEventListener('click', () => {
+        const sName = nameInput.value.trim();
+        const sClass = classInput.value;
+
+        if (!sName) {
+            alert("Sila masukkan nama anda!");
+            return;
+        }
+        if (!sClass) {
+            alert("Sila pilih kelas anda!");
+            return;
+        }
+
+        studentName = sName;
+        studentClass = sClass;
+
+        // 切换界面
+        startScreen.style.display = 'none';
+        quizContent.style.display = 'block';
+
+        // 显示学生信息
+        dispName.textContent = `Nama: ${studentName}`;
+        dispClass.textContent = `Kelas: ${studentClass}`;
+
+        loadQuestion();
+    });
+
+    // ====== 2. 测验逻辑 ======
     function loadQuestion(){
-      answered=false;
-      document.getElementById('nextBtn').disabled = true;
-      const q = data[current];
-      document.getElementById('question').innerHTML = q.q;
-      document.getElementById('cur').textContent = current+1;
-      const optsDiv = document.getElementById('options');
-      optsDiv.innerHTML = '';
-      q.options.forEach((opt,i)=>{
-        const div = document.createElement('div');
-        div.className='opt';
-        div.innerHTML = opt;
-        div.addEventListener('click',()=>selectOption(div,i));
-        optsDiv.appendChild(div);
-      });
-    }
+      answered = false;
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.disabled = true;
+      nextBtn.textContent = "Soalan Seterusnya";
 
-    function selectOption(el,index){
-      if(answered) return;
-      answered=true;
-      const q = data[current];
-      const all = document.querySelectorAll('.opt');
-      all.forEach((d,i)=>{ if(i===q.answer) d.classList.add('correct'); });
-      if(index!==q.answer) el.classList.add('wrong'); else score++;
-      document.getElementById('score').textContent='Markah: '+score;
-      document.getElementById('nextBtn').disabled=false;
-    }
-
-    document.getElementById('nextBtn').addEventListener('click',()=>{
-      current++;
-      if(current>=data.length){
-        alert('Latihan tamat! Jumlah markah: ' + score);
+      // 检查是否完成
+      if(current >= data.length){
+        submitToGoogleSheet();
         return;
       }
+
+      const q = data[current];
+      document.getElementById('question').innerHTML = q.q;
+      document.getElementById('cur').textContent = current + 1;
+      
+      const optsDiv = document.getElementById('options');
+      optsDiv.innerHTML = '';
+      
+      q.options.forEach((opt,i)=>{
+        const div = document.createElement('div');
+        div.className = 'opt';
+        div.innerHTML = opt;
+        div.addEventListener('click', () => selectOption(div, i));
+        optsDiv.appendChild(div);
+      });
+
+      // 如果是最后一题，改变按钮文字
+      if(current === data.length - 1) {
+          nextBtn.textContent = "Hantar Jawapan (Submit)";
+      }
+    }
+
+    function selectOption(el, index){
+      if(answered) return;
+      answered = true;
+      const q = data[current];
+      const all = document.querySelectorAll('.opt');
+      
+      all.forEach((d,i)=>{ if(i === q.answer) d.classList.add('correct'); });
+      
+      if(index !== q.answer) {
+          el.classList.add('wrong');
+      } else {
+          score++;
+      }
+      
+      document.getElementById('score').textContent = 'Markah: ' + score;
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      current++;
       loadQuestion();
     });
 
-    document.getElementById('restart').addEventListener('click',()=>{
-      if(confirm('Adakah anda mahu mengulang semula latihan?')){
-        current=0;
-        score=0;
-        document.getElementById('score').textContent='Markah: 0';
-        loadQuestion();
-      }
-    });
+    // ====== 3. 提交数据函数 (新增) ======
+    function submitToGoogleSheet() {
+        // 1. 显示加载中界面
+        container.innerHTML = `
+            <div style="text-align:center; padding: 40px;">
+                <h2 style="color:#ff69b4;">⏳ Sedang menghantar keputusan...</h2>
+                <p style="color:#666; font-size:1.1rem;">Sila tunggu sebentar, markah anda sedang disimpan.</p>
+            </div>
+        `;
 
-    loadQuestion();
+        // 2. 准备数据
+        const formData = new URLSearchParams();
+        formData.append("name", studentName);
+        formData.append("class", studentClass);
+        formData.append("score", score);
+        formData.append("total", data.length);
+
+        // 3. 发送请求
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(text => {
+            // 成功后的界面
+            showFinalResult(true);
+        })
+        .catch(error => {
+            // 错误后的界面
+            console.error('Error:', error);
+            showFinalResult(false);
+        });
+    }
+
+    // ====== 4. 显示最终结果 (新增) ======
+    function showFinalResult(isSuccess) {
+        let statusMessage = "";
+        if (isSuccess) {
+            statusMessage = `<div style="background:#d4edda; color:#155724; padding:15px; border-radius:10px; margin:20px 0; border:2px solid #c3e6cb; font-size:1.1rem;">✅ <strong>Berjaya!</strong> Keputusan telah dihantar kepada cikgu.</div>`;
+        } else {
+            statusMessage = `<div style="background:#f8d7da; color:#721c24; padding:15px; border-radius:10px; margin:20px 0; border:2px solid #f5c6cb; font-size:1.1rem;">⚠️ <strong>Ralat Talian!</strong> Sila 'Screenshot' skrin ini dan hantar kepada cikgu.</div>`;
+        }
+
+        container.innerHTML = `
+            <div id="result-screen">
+                <h2 style="color:#ff1493; font-size:2.5rem;">Tahniah, ${studentName}! 🎉</h2>
+                <p style="font-size:1.5rem; color:#666; margin:10px 0;">Kelas: ${studentClass}</p>
+                <div style="
+                    font-size: 4rem; 
+                    font-weight: bold; 
+                    color: #fff; 
+                    background: #ff69b4; 
+                    width: 150px; 
+                    height: 150px; 
+                    line-height: 150px; 
+                    border-radius: 50%; 
+                    margin: 20px auto; 
+                    box-shadow: 0 5px 15px rgba(255,105,180,0.5);">
+                    ${score}/${data.length}
+                </div>
+                ${statusMessage}
+                <p style="font-size:1.2rem;">Latihan Tamat.</p>
+                <button onclick="location.reload()" style="
+                    padding: 12px 30px; 
+                    font-size: 1.2rem; 
+                    background: #87ceeb; 
+                    color: white; 
+                    border: none; 
+                    border-radius: 50px; 
+                    cursor: pointer; 
+                    margin-top: 20px;
+                    font-weight:bold;
+                    box-shadow: 0 4px 0 #4682b4;">
+                    Buat Semula (Ulang) 🔄
+                </button>
+            </div>
+        `;
+    }
   </script>
 </body>
 </html>
-
